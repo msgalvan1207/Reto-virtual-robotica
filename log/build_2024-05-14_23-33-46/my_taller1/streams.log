@@ -1,0 +1,71 @@
+[0.702s] Invoking command in '/home/yesid/Robotica_proyecto/src/my_taller1': PYTHONPATH=/home/yesid/Robotica_proyecto/build/my_taller1/prefix_override:/home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_taller1 build --build-base /home/yesid/Robotica_proyecto/build/my_taller1/build install --record /home/yesid/Robotica_proyecto/build/my_taller1/install.log --single-version-externally-managed
+[0.915s] running egg_info
+[0.915s] creating ../../build/my_taller1/my_taller1.egg-info
+[0.915s] writing ../../build/my_taller1/my_taller1.egg-info/PKG-INFO
+[0.916s] writing dependency_links to ../../build/my_taller1/my_taller1.egg-info/dependency_links.txt
+[0.916s] writing entry points to ../../build/my_taller1/my_taller1.egg-info/entry_points.txt
+[0.916s] writing requirements to ../../build/my_taller1/my_taller1.egg-info/requires.txt
+[0.916s] writing top-level names to ../../build/my_taller1/my_taller1.egg-info/top_level.txt
+[0.916s] writing manifest file '../../build/my_taller1/my_taller1.egg-info/SOURCES.txt'
+[0.917s] reading manifest file '../../build/my_taller1/my_taller1.egg-info/SOURCES.txt'
+[0.918s] writing manifest file '../../build/my_taller1/my_taller1.egg-info/SOURCES.txt'
+[0.918s] running build
+[0.918s] running build_py
+[0.918s] creating /home/yesid/Robotica_proyecto/build/my_taller1/build
+[0.919s] creating /home/yesid/Robotica_proyecto/build/my_taller1/build/lib
+[0.919s] creating /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.919s] copying my_taller1/keyboard_teleop_hold.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.919s] copying my_taller1/__init__.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.919s] copying my_taller1/MiCliente.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.919s] copying my_taller1/Servicio.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/terminal.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/laser_information.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/laser_visualization.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/nodo1.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/nodo_movement.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/transforamated_laser_info.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] copying my_taller1/h.py -> /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1
+[0.920s] running install
+[0.921s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.921s]   warnings.warn(
+[0.921s] running install_lib
+[0.922s] creating /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.922s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/keyboard_teleop_hold.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.922s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/__init__.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.922s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/MiCliente.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.922s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/Servicio.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/terminal.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/laser_information.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/laser_visualization.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/nodo1.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/nodo_movement.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/transforamated_laser_info.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] copying /home/yesid/Robotica_proyecto/build/my_taller1/build/lib/my_taller1/h.py -> /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1
+[0.923s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/keyboard_teleop_hold.py to keyboard_teleop_hold.cpython-310.pyc
+[0.924s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/__init__.py to __init__.cpython-310.pyc
+[0.924s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/MiCliente.py to MiCliente.cpython-310.pyc
+[0.924s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/Servicio.py to Servicio.cpython-310.pyc
+[0.925s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/terminal.py to terminal.cpython-310.pyc
+[0.925s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/laser_information.py to laser_information.cpython-310.pyc
+[0.926s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/laser_visualization.py to laser_visualization.cpython-310.pyc
+[0.927s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/nodo1.py to nodo1.cpython-310.pyc
+[0.928s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/nodo_movement.py to nodo_movement.cpython-310.pyc
+[0.928s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/transforamated_laser_info.py to transforamated_laser_info.cpython-310.pyc
+[0.931s] byte-compiling /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1/h.py to h.cpython-310.pyc
+[0.932s] running install_data
+[0.932s] creating /home/yesid/Robotica_proyecto/install/my_taller1/share/ament_index
+[0.932s] creating /home/yesid/Robotica_proyecto/install/my_taller1/share/ament_index/resource_index
+[0.933s] creating /home/yesid/Robotica_proyecto/install/my_taller1/share/ament_index/resource_index/packages
+[0.933s] copying resource/my_taller1 -> /home/yesid/Robotica_proyecto/install/my_taller1/share/ament_index/resource_index/packages
+[0.933s] copying package.xml -> /home/yesid/Robotica_proyecto/install/my_taller1/share/my_taller1
+[0.933s] running install_egg_info
+[0.934s] Copying ../../build/my_taller1/my_taller1.egg-info to /home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages/my_taller1-0.0.0-py3.10.egg-info
+[0.935s] running install_scripts
+[0.951s] Installing client_p1 script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.951s] Installing laser_info script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.951s] Installing laser_visualization script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.951s] Installing nodo1 script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.951s] Installing serviciot_p1 script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.952s] Installing turtle_bot_teleop script to /home/yesid/Robotica_proyecto/install/my_taller1/lib/my_taller1
+[0.952s] writing list of installed files to '/home/yesid/Robotica_proyecto/build/my_taller1/install.log'
+[0.974s] Invoked command in '/home/yesid/Robotica_proyecto/src/my_taller1' returned '0': PYTHONPATH=/home/yesid/Robotica_proyecto/build/my_taller1/prefix_override:/home/yesid/Robotica_proyecto/install/my_taller1/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/my_taller1 build --build-base /home/yesid/Robotica_proyecto/build/my_taller1/build install --record /home/yesid/Robotica_proyecto/build/my_taller1/install.log --single-version-externally-managed

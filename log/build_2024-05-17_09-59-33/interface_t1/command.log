@@ -1,0 +1,2 @@
+Invoking command in '/home/robotica/Robotica_proyecto/build/interface_t1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robotica/taller_1/install/turtle_bot_3:/opt/ros/humble /usr/bin/cmake --build /home/robotica/Robotica_proyecto/build/interface_t1 -- -j4 -l4
+Invoked command in '/home/robotica/Robotica_proyecto/build/interface_t1' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robotica/taller_1/install/turtle_bot_3:/opt/ros/humble /usr/bin/cmake --build /home/robotica/Robotica_proyecto/build/interface_t1 -- -j4 -l4

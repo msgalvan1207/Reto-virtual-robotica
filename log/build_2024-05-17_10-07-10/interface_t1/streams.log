@@ -1,0 +1,6 @@
+[0.146s] Invoking command in '/home/robotica/Robotica_proyecto/build/interface_t1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robotica/taller_1/install/turtle_bot_3:/opt/ros/humble /usr/bin/cmake --build /home/robotica/Robotica_proyecto/build/interface_t1 -- -j4 -l4
+[0.172s] [0mCMake Error: The current CMakeCache.txt directory /home/robotica/Robotica_proyecto/build/interface_t1/CMakeCache.txt is different than the directory /home/yesid/Robotica_proyecto/build/interface_t1 where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt[0m
+[0.204s] [0mCMake Error: The source directory "/home/yesid/Robotica_proyecto/src/interface_t1" does not exist.
+[0.204s] Specify --help for usage, or press the help button on the CMake GUI.[0m
+[0.208s] gmake: *** [Makefile:747: cmake_check_build_system] Error 1
+[0.232s] Invoked command in '/home/robotica/Robotica_proyecto/build/interface_t1' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robotica/taller_1/install/turtle_bot_3:/opt/ros/humble /usr/bin/cmake --build /home/robotica/Robotica_proyecto/build/interface_t1 -- -j4 -l4
