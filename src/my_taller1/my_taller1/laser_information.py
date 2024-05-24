@@ -59,7 +59,9 @@ class LaserDataSubscriber(Node):
             x.append(xt)
             y.append(xy)
             matrix.append(fila)
-            print(matrix)
+        
+        
+        print(matrix)
         return matrix,x,y
 
     def transform_coordinates(self,lx,ly,orientation,posx,posy):

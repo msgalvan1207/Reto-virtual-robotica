@@ -76,7 +76,7 @@ class MinimalService(Node):
         self.get_logger().info('Incoming request\na: %r' % (request.ruta))  # CHANGE
 
         
-        self.control_robot(str(ruta))
+        #self.control_robot(str(ruta))
 
 
         return response
