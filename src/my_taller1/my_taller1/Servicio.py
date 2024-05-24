@@ -1,8 +1,10 @@
 from interface_t1.srv import MiServicio                                                      # CHANGE
 
 import rclpy
+import math
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, TwistStamped
+from std_msgs.msg import Float32, Float32MultiArray
 from abc import ABC, abstractmethod
 from rclpy.qos import qos_profile_system_default
 
@@ -20,16 +22,41 @@ class MinimalService(Node):
         super().__init__('minimal_service')
                 
         print("Servicio")
-
+        
+        
+        #Iniciar variables con un valor inicial
+        #Variables de posicón y orientación del robot
+        self.posx=0
+        self.posy=0
+        self.theta = 0
+        
+        #Variables de posición deseados
+        self.posx_deseado=0
+        self.posy_deseado=0
 
         
-
+        
+        #Publicadores y subscriptores que se tienen que tener en cuenta:
+        #Subscriptor de posición del robot
+        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback)
+        
+        #Subscriptor de orientación del robot
+        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback)
+        
+        #Subscriptor de laser
+        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback)
+        
+        #Subscriptor del servicio
         self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
-        self.posx_deseado,self.posy_deseado=0,0
-        self.posx,self.posy=0,0
-
-        # CHANGE
-        # Subscribirse a los topicos de laser?
+        
+    
+    def orientation_callback(self, msg):
+        self.theta = msg.data + math.pi
+    
+    
+    def pos_callback(self, msg):
+        self.posx = msg.linear.x
+        self.posy = msg.linear.y
 
 
 

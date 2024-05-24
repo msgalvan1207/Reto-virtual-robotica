@@ -40,7 +40,7 @@ class LaserDataSubscriber(Node):
             #print(len(self.laser_data_list))
             #print("Datos del láser recibidos y convertidos a lista:", self.laser_data_list)
             self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.x,self.y,self.orientation)
-            print( "x:",self.x,"y:",self.y,"orientation:",self.orientation)
+            #print( "x:",self.x,"y:",self.y,"orientation:",self.orientation)
            
 
     def descompress_data(self,lista_sensores,posx,posy,orientation):
@@ -59,6 +59,7 @@ class LaserDataSubscriber(Node):
             x.append(xt)
             y.append(xy)
             matrix.append(fila)
+            print(matrix)
         return matrix,x,y
 
     def transform_coordinates(self,lx,ly,orientation,posx,posy):
