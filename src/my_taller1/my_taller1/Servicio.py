@@ -2,6 +2,7 @@ from interface_t1.srv import MiServicio                                         
 
 import rclpy
 import math
+import heapq
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Float32, Float32MultiArray
@@ -39,6 +40,10 @@ class MinimalService(Node):
         self.position_laser = []
         self.x_laser_transform = []
         self.y_laser_transform = []
+    
+        #Variables de navegacion
+        self.map = {}
+        self.grid_size = 0.1
         
         
         
@@ -67,7 +72,18 @@ class MinimalService(Node):
     
     def laser_callback(self, msg):
         self.laser_data_list = list(msg.data)
-        self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
+        #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
+        self.update_map()
+        self.recalculate_path()
+        
+    def update_map(self):
+        for i in range(0,len(self.laser_data_list),2):
+            lx = self.laser_data_list[i] + self.posx
+            ly = self.laser_data_list[i+1] + self.posy
+            xt,xy = self.transform_coordinates(lx,ly,self.theta,self.posx,self.posy)
+            x = int(xt//self.grid_size)
+            y = int(xy//self.grid_size)
+            self.map[(x,y)] = 1
         
     def descompress_data(self,lista_sensores,posx,posy,orientation):
         matrix = []
@@ -94,6 +110,57 @@ class MinimalService(Node):
         y_transformated = (sth * lx + cth * ly) +posy
         
         return x_transformated,y_transformated
+    
+    def a_star(self,start,goal):
+        open_set = []
+        heapq.heappush(open_set,(0,start))
+        came_from = {}
+        g_score = {start:0}
+        f_score = {start:self.heuristic(start,goal)}
+        
+        while open_set:
+            current = heapq.heappop(open_set)[1]
+            
+            if current == goal:
+                path = []
+                while current in came_from:
+                    path.append(current)
+                    current = came_from[current]
+                path.reverse()
+                return path
+            
+            neighbors = self.get_neighbors(current)
+            for neighbor in neighbors:
+                tentative_g_score = g_score[current] + 1
+                
+                if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
+                    came_from[neighbor] = current
+                    g_score[neighbor] = tentative_g_score
+                    f_score[neighbor] = tentative_g_score + self.heuristic(neighbor,goal)
+                    heapq.heappush(open_set,(f_score[neighbor],neighbor))
+        
+        return []
+    
+    def heuristic(self,a,b):
+        return abs(a[0]-b[0]) + abs(a[1]-b[1])
+    
+    def get_neighbors(self,node):
+        neighbors = []
+        directions = [(0,1), (1,0), (0,-1), (-1,0)]
+        for direction in directions:
+            neighbor = (node[0]+direction[0],node[1]+direction[1])
+            if neighbor not in self.map:
+                neighbors.append(neighbor)
+        return neighbors
+    
+    def recalculate_path(self):
+        try:
+            start = (int(self.posx//self.grid_size),int(self.posy//self.grid_size))
+            goal = (int(self.posx_deseado//self.grid_size),int(self.posy_deseado//self.grid_size))
+            self.current_path = self.a_star(start,goal)
+            print(self.current_path)
+        except:
+            self.current_path = []
 
 
     def MiServicio_callback(self, request, response):
@@ -112,7 +179,7 @@ class MinimalService(Node):
         self.get_logger().info('Incoming request\na: %r' % (request.ruta))  # CHANGE
 
         
-        #self.control_robot(str(ruta))
+        self.control_robot(str(ruta))
 
 
         return response
