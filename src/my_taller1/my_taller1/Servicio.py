@@ -33,7 +33,13 @@ class MinimalService(Node):
         #Variables de posición deseados
         self.posx_deseado=0
         self.posy_deseado=0
-
+        
+        #Variables de datos del laser
+        self.laser_data_list = []
+        self.position_laser = []
+        self.x_laser_transform = []
+        self.y_laser_transform = []
+        
         
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
@@ -57,7 +63,37 @@ class MinimalService(Node):
     def pos_callback(self, msg):
         self.posx = msg.linear.x
         self.posy = msg.linear.y
-
+        
+    
+    def laser_callback(self, msg):
+        self.laser_data_list = list(msg.data)
+        self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
+        
+    def descompress_data(self,lista_sensores,posx,posy,orientation):
+        matrix = []
+        x = []
+        y = []
+        for i in range(0,len(lista_sensores),2):
+            fila = []
+            fila.append(lista_sensores[i])
+            fila.append(lista_sensores[i+1])
+            lx = lista_sensores[i]+posx
+            ly = lista_sensores[i+1]+posy
+            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+            
+            x.append(xt)
+            y.append(xy)
+            matrix.append(fila)
+    
+        return matrix,x,y
+    
+    def transform_coordinates(self,lx,ly,orientation,posx,posy):
+        cth = math.cos(orientation)
+        sth = math.sin(orientation)
+        x_transformated = (cth * lx - sth * ly) +posx
+        y_transformated = (sth * lx + cth * ly) +posy
+        
+        return x_transformated,y_transformated
 
 
     def MiServicio_callback(self, request, response):
