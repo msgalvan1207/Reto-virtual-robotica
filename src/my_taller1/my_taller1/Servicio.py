@@ -97,10 +97,15 @@ class MinimalService(Node):
             lx = lista_sensores[i] + posx
             ly = lista_sensores[i+1] + posy
             xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
-            x = int(xt//self.grid_size)
-            y = int(xy//self.grid_size)
-            self.map[(x,y)] = 1
-        
+            self.addPointGlobal(xt,xy,posx,posy,orientation)
+
+    
+    def addPointGlobal(self, x, y, posx, posy, orientation):
+        rotation_matrix = np.array([[math.cos(orientation), -math.sin(orientation)], [math.sin(orientation), math.cos(orientation)]])
+        translation_vector = np.array([posx, posy])
+        global_coordinates = np.dot(rotation_matrix, np.array([x, y])) + translation_vector
+        self.map[(int(global_coordinates[0]//self.grid_size), int(global_coordinates[1]//self.grid_size))] = 1
+    
     def descompress_data(self,lista_sensores,posx,posy,orientation):
         matrix = []
         x = []
