@@ -50,16 +50,16 @@ class MinimalService(Node):
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
         #Subscriptor de posición del robot
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10)
+        #self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10)
         
         #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10)
+        #self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10)
         
         #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
+        #self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
         
         #Subscriptor del servicio
-        self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
+        #self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
         
     
     def orientation_callback(self, msg):
