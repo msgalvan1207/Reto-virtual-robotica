@@ -28,9 +28,8 @@ class MinimalService(Node):
         
         #Variables de callback Groups (1 por callback, se utilizan para que los callbacks no se bloqueen entre si y par que un mismo callback no se ejecute al mismo tiempo que si mismo)
         
-        self.pos_callback_group = MutuallyExclusiveCallbackGroup()
-        self.orientation_callback_group = MutuallyExclusiveCallbackGroup()
-        self.laser_callback_group = MutuallyExclusiveCallbackGroup()
+        
+        self.simulation_callback_group = MutuallyExclusiveCallbackGroup()
         self.service_callback_group = MutuallyExclusiveCallbackGroup()
         
         #Iniciar variables con un valor inicial
@@ -52,18 +51,19 @@ class MinimalService(Node):
         #Variables de navegacion
         self.map = {}
         self.grid_size = 0.1
+        self.current_path = []
         
         
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
         #Subscriptor de posición del robot
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10, callback_group=self.pos_callback_group)
+        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10, callback_group=self.simulation_callback_group)
         
         #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10, callback_group=self.orientation_callback_group)
+        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10, callback_group=self.simulation_callback_group)
         
         #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10, callback_group=self.laser_callback_group)
+        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10, callback_group=self.simulation_callback_group)
         
         #Subscriptor del servicio
         self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback, callback_group=self.service_callback_group) 
@@ -83,7 +83,7 @@ class MinimalService(Node):
         self.laser_data_list = list(msg.data)
         #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
         self.update_map()
-        self.recalculate_path()
+        #self.recalculate_path()
         
     def update_map(self):
         for i in range(0,len(self.laser_data_list),2):
@@ -135,6 +135,7 @@ class MinimalService(Node):
                 while current in came_from:
                     path.append(current)
                     current = came_from[current]
+                path.append(start)
                 path.reverse()
                 return path
             
@@ -208,6 +209,10 @@ class MinimalService(Node):
         
         while(self.ratio_separation() > 0.5):
             self.get_logger().info("while loop in service callback")
+            
+            self.recalculate_path()
+            print(self.current_path)
+            
             v,w=0.0,0.0 
             msg = Twist()
             msg.linear.x = v
@@ -216,22 +221,11 @@ class MinimalService(Node):
             time.sleep(timer_period)
         
         
-        #self.thread = threading.Thread(target=self.loop_thread)
-        #self.thread.start()
             
     def ratio_separation(self):
         r=((self.posx-self.posx_deseado)**2+(self.posy-self.posy_deseado)**2)**(0.5)
         return r
     
-    def loop_thread(self):
-        while (self.ratio_separation() > 0.5):
-            #print("async call kinda works")
-            v,w=0.0,0.0 
-            msg = Twist()
-            msg.linear.x = v
-            msg.angular.z = w 
-            self.publisher_.publish(msg)
-            time.sleep(0.1)
         
 
 
