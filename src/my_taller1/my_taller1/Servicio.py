@@ -247,8 +247,8 @@ def main(args=None):
     try:
         executor.spin()
     finally:
-        executor.shutdown()
         minimal_service_node.destroy_node()
+        executor.shutdown()
         rclpy.shutdown()
 
 if __name__ == '__main__':
