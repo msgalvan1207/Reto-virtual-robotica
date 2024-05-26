@@ -39,13 +39,13 @@ class MinimalService(Node):
         
         #Iniciar variables con un valor inicial
         #Variables de posicón y orientación del robot
-        self.posx=0
-        self.posy=0
-        self.theta = 0
+        self.posx=None
+        self.posy=None
+        self.theta = None
         
         #Variables de posición deseados
-        self.posx_deseado=0
-        self.posy_deseado=0
+        self.posx_deseado=None
+        self.posy_deseado=None
         
         #Variables de datos del laser
         self.laser_data_list = []
@@ -93,13 +93,14 @@ class MinimalService(Node):
         #self.recalculate_path()
         
     def update_map(self, lista_sensores,posx,posy,orientation):
-        for i in range(0,len(lista_sensores),2):
-            lx = lista_sensores[i] + posx
-            ly = lista_sensores[i+1] + posy
-            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
-            x = int(xt//self.grid_size)
-            y = int(xy//self.grid_size)
-            self.map[(x,y)] = 1
+        if posx and posy and orientation:
+            for i in range(0,len(lista_sensores),2):
+                lx = lista_sensores[i] + posx
+                ly = lista_sensores[i+1] + posy
+                xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+                x = int(xt//self.grid_size)
+                y = int(xy//self.grid_size)
+                self.map[(x,y)] = 1
         
     def descompress_data(self,lista_sensores,posx,posy,orientation):
         matrix = []
@@ -243,12 +244,13 @@ def displayMapRealtime(matrix, Node):
 
 
 def displayThread(Node):
-    while True:
+    while Node:
+
         matrix = 255*np.ones((300,300), dtype = np.uint8)
-        matrix[(Node.posx//Node.grid_size)+200][(Node.posy//Node.grid_size)+200] = 128
+        if Node.posx and Node.posy:
+            matrix[int(Node.posx//Node.grid_size)+200][int(Node.posy//Node.grid_size)+200] = 128
         for pos in Node.map:
-            x, y = pos
-            matrix[x+200][y+200] = Node.map[pos]
+            matrix[pos[0]+200][pos[1]+200] = Node.map[pos]
         displayMapRealtime(matrix, Node)
         time.sleep(1 /30.0)
 
