@@ -5,6 +5,7 @@ import math
 import heapq
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
+from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
 from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Float32, Float32MultiArray
 from abc import ABC, abstractmethod
@@ -23,8 +24,14 @@ class MinimalService(Node):
     def __init__(self):
         super().__init__('minimal_service')
                 
-        print("Servicio")
+        self.get_logger().info('Minimal Service has been started')
         
+        #Variables de callback Groups (1 por callback, se utilizan para que los callbacks no se bloqueen entre si y par que un mismo callback no se ejecute al mismo tiempo que si mismo)
+        
+        self.pos_callback_group = MutuallyExclusiveCallbackGroup()
+        self.orientation_callback_group = MutuallyExclusiveCallbackGroup()
+        self.laser_callback_group = MutuallyExclusiveCallbackGroup()
+        self.service_callback_group = MutuallyExclusiveCallbackGroup()
         
         #Iniciar variables con un valor inicial
         #Variables de posicón y orientación del robot
@@ -50,16 +57,16 @@ class MinimalService(Node):
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
         #Subscriptor de posición del robot
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10)
+        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10, callback_group=self.pos_callback_group)
         
         #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10)
+        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10, callback_group=self.orientation_callback_group)
         
         #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
+        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10, callback_group=self.laser_callback_group)
         
         #Subscriptor del servicio
-        self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
+        self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback, callback_group=self.service_callback_group) 
         
     
     def orientation_callback(self, msg):
@@ -72,6 +79,7 @@ class MinimalService(Node):
         
     
     def laser_callback(self, msg):
+        self.get_logger().info("Laser data callback invoqued")
         self.laser_data_list = list(msg.data)
         #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
         self.update_map()
@@ -155,26 +163,24 @@ class MinimalService(Node):
         return neighbors
     
     def recalculate_path(self):
-        print('invoqued recalculate_path')
+        #print('invoqued recalculate_path')
         try:
             start = (int(self.posx//self.grid_size),int(self.posy//self.grid_size))
             goal = (int(self.posx_deseado//self.grid_size),int(self.posy_deseado//self.grid_size))
             print(start, goal, (self.posx, self.posy), (self.posx_deseado, self.posy_deseado))
             self.current_path = self.a_star(start,goal)
-            print(self.current_path)
-            print('try function')
+            #print(self.current_path)
+            #print('try function')
         except:
             self.current_path = []
-            print('catch except')
+            #print('catch except')
             
 
 
     def MiServicio_callback(self, request, response):
 
-        print('se invoco el servicio?')
         ruta=request.ruta
-        print("Servicio")
-        print(ruta)
+        self.get_logger().info('Incoming request\na: %r' % (request.ruta))
         
 
 
@@ -182,7 +188,6 @@ class MinimalService(Node):
             response.confirmacion = True
         else:
             response.confirmacion=False # CHANGE
-        self.get_logger().info('Incoming request\na: %r' % (request.ruta))  # CHANGE
 
         
         self.control_robot(str(ruta))
@@ -197,17 +202,18 @@ class MinimalService(Node):
         self.posx_deseado=float(self.posx_deseado)
         self.posy_deseado=float(self.posy_deseado)
         timer_period = 0.1  # seconds
-        #print("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
+        #self.get_logger().info("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
         self.publisher_ = self.create_publisher(Twist, '/turtlebot_cmdVel', 1)
         
         
         while(self.ratio_separation() > 0.5):
+            self.get_logger().info("while loop in service callback")
             v,w=0.0,0.0 
             msg = Twist()
             msg.linear.x = v
             msg.angular.z = w 
             self.publisher_.publish(msg)
-            time.sleep(0.0)
+            time.sleep(0.1)
         
         
         #self.thread = threading.Thread(target=self.loop_thread)
@@ -219,7 +225,7 @@ class MinimalService(Node):
     
     def loop_thread(self):
         while (self.ratio_separation() > 0.5):
-            print("async call kinda works")
+            #print("async call kinda works")
             v,w=0.0,0.0 
             msg = Twist()
             msg.linear.x = v
