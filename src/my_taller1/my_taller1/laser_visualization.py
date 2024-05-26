@@ -81,7 +81,7 @@ class RobotVisualizer(Node):
         sth = math.sin(self.orientation + self.offset_angle)
 
         #print("laser_points_sensor_x=", self.x_laser_robot_position)
-        print("laser_points_sensor_y=", self.y_laser_robot_position)
+        #print("laser_points_sensor_y=", self.y_laser_robot_position)
         for i in range(len(self.position_laser)):
             l_x = self.x_laser_robot_position[i]
             l_y = self.y_laser_robot_position[i]

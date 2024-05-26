@@ -76,7 +76,7 @@ class MinimalService(Node):
     
     def orientation_callback(self, msg):
         #self.get_logger().info("orientation callback")
-        self.theta = msg.data + math.pi
+        self.theta = msg.data - math.pi
     
     
     def pos_callback(self, msg):
@@ -89,14 +89,14 @@ class MinimalService(Node):
         #self.get_logger().info("Laser data callback invoqued")
         self.laser_data_list = list(msg.data)
         #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
-        self.update_map()
+        self.update_map(self.laser_data_list,self.posx,self.posy,self.theta)
         #self.recalculate_path()
         
-    def update_map(self):
-        for i in range(0,len(self.laser_data_list),2):
-            lx = self.laser_data_list[i] + self.posx
-            ly = self.laser_data_list[i+1] + self.posy
-            xt,xy = self.transform_coordinates(lx,ly,self.theta,self.posx,self.posy)
+    def update_map(self, lista_sensores,posx,posy,orientation):
+        for i in range(0,len(lista_sensores),2):
+            lx = lista_sensores[i] + posx
+            ly = lista_sensores[i+1] + posy
+            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
             x = int(xt//self.grid_size)
             y = int(xy//self.grid_size)
             self.map[(x,y)] = 1
@@ -233,7 +233,6 @@ class MinimalService(Node):
         r=((self.posx-self.posx_deseado)**2+(self.posy-self.posy_deseado)**2)**(0.5)
         return r
     
-        
 
 
 def displayMapRealtime(matrix, Node):
@@ -243,15 +242,16 @@ def displayMapRealtime(matrix, Node):
 	cv2.waitKey(1)
 
 
-
 def displayThread(Node):
-	while True:
-		matrix = 255*np.ones((300,300), dtype = np.uint8)
-		for pos in Node.map:
-			x, y = pos
-			matrix[x+200][y+200] = Node.map[pos]
-		displayMapRealtime(matrix, Node)
-		time.sleep(1 /30.0)
+    while True:
+        matrix = 255*np.ones((300,300), dtype = np.uint8)
+        matrix[Node.posx+200][Node.posy+200] = 128
+        for pos in Node.map:
+            x, y = pos
+            matrix[x+200][y+200] = Node.map[pos]
+        displayMapRealtime(matrix, Node)
+        time.sleep(1 /30.0)
+
 
 
 def main(args=None):
