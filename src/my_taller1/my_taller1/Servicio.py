@@ -59,7 +59,7 @@ class MinimalService(Node):
         #self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
         
         #Subscriptor del servicio
-        #self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
+        self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
         
     
     def orientation_callback(self, msg):
@@ -171,6 +171,7 @@ class MinimalService(Node):
 
     def MiServicio_callback(self, request, response):
 
+        print('se invoco el servicio?')
         ruta=request.ruta
         print("Servicio")
         print(ruta)
