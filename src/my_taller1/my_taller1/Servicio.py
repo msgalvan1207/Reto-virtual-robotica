@@ -181,8 +181,7 @@ class MinimalService(Node):
         if len(request.ruta)>0:
             response.confirmacion = True
         else:
-            response.confirmacion=False  
-                                                          # CHANGE
+            response.confirmacion=False # CHANGE
         self.get_logger().info('Incoming request\na: %r' % (request.ruta))  # CHANGE
 
         
@@ -191,7 +190,7 @@ class MinimalService(Node):
 
         return response
 
- 
+
     def control_robot(self, group):
 
         self.posx_deseado,self.posy_deseado=group.split(',')
@@ -201,35 +200,21 @@ class MinimalService(Node):
         #print("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
         self.publisher_ = self.create_publisher(Twist, '/turtlebot_cmdVel', 1)
         
-        
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10)
-        
-        #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10)
-        
-        #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
-        
-        #Subscriptor del servicio
-        #self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
-        
-        
-        while (self.ratio_separation() > 0.5):
-            #print("x_deseado: %f y_deseado: %f x_actual: %f y_actual: %f" % (self.posx_deseado,self.posy_deseado,self.posx,self.posy))
-            #Hacer codigo de moviemiento de roboot , recordar suscribirse a los topicos de '/turtlebot_position', /turtlebot_orientation' y '/hokuyo_laser_data''
-            #print('stuck in this loop')
-
-            v,w=0.0,0.0 
-            msg = Twist()
-            msg.linear.x = v
-            msg.angular.z = w 
-
-            self.publisher_.publish(msg)
-            time.sleep(timer_period)
+        self.thread = threading.Thread(target=self.loop_thread)
             
     def ratio_separation(self):
         r=((self.posx-self.posx_deseado)**2+(self.posy-self.posy_deseado)**2)**(0.5)
         return r
+    
+    def loop_thread(self):
+        while (self.ratio_separation() > 0.5):
+            print("async call kinda works")
+            v,w=0.0,0.0 
+            msg = Twist()
+            msg.linear.x = v
+            msg.angular.z = w 
+            self.publisher_.publish(msg)
+            time.sleep(0.1)
         
 
 
