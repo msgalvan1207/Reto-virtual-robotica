@@ -1,4 +1,5 @@
-from interface_t1.srv import MiServicio                                                      # CHANGE
+from interface_t1.srv import MiServicio
+
 
 import rclpy
 import math
@@ -18,6 +19,10 @@ import sys
 import time
 import threading
 import random
+
+import cv2
+import numpy as np
+
 
 class MinimalService(Node):
 
@@ -229,6 +234,23 @@ class MinimalService(Node):
         
 
 
+def displayMapRealtime(matrix, Node):
+	map_display = cv2.resize(matrix, (900,900), interpolation = cv2.INTER_NEAREST)
+	map_display = cv2.cvtColor(map_display, cv2.COLOR_GRAY2RGB)
+	cv2.imshow("Map", map_display)
+	cv2.waitKey(1)
+
+
+
+def displayThread(Node):
+	while True:
+		matrix = 255*np.ones((300,300), dtype = np.uint8)
+		for pos in Node.map:
+			x, y = pos
+			matrix[x+200][y+200] = Node.map[pos]
+		displayMapRealtime(matrix, Node)
+		time.sleep(1 /30.0)
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -237,6 +259,10 @@ def main(args=None):
 
     executor = MultiThreadedExecutor()
     executor.add_node(minimal_service_node)
+    
+    displayThread = threading.Thread(target=displayThread, args=(minimal_service_node,), daemon=True)
+    
+    displayThread.start()
 
     try:
         executor.spin()
