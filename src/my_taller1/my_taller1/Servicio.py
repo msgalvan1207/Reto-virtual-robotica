@@ -200,7 +200,18 @@ class MinimalService(Node):
         #print("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
         self.publisher_ = self.create_publisher(Twist, '/turtlebot_cmdVel', 1)
         
-        self.thread = threading.Thread(target=self.loop_thread)
+        
+        while(self.ratio_separation() > 0.5):
+            v,w=0.0,0.0 
+            msg = Twist()
+            msg.linear.x = v
+            msg.angular.z = w 
+            self.publisher_.publish(msg)
+            time.sleep(0.0)
+        
+        
+        #self.thread = threading.Thread(target=self.loop_thread)
+        #self.thread.start()
             
     def ratio_separation(self):
         r=((self.posx-self.posx_deseado)**2+(self.posy-self.posy_deseado)**2)**(0.5)
