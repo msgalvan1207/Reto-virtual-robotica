@@ -1,0 +1,8 @@
+#Ignore build directories
+build/
+install/
+log/
+
+src/interface_t1/build/
+src/interface_t1/install/
+src/interface_t1/log
