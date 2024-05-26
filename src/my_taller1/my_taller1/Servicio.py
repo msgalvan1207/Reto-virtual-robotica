@@ -213,7 +213,7 @@ class MinimalService(Node):
             msg.linear.x = v
             msg.angular.z = w 
             self.publisher_.publish(msg)
-            time.sleep(0.1)
+            time.sleep(timer_period)
         
         
         #self.thread = threading.Thread(target=self.loop_thread)
