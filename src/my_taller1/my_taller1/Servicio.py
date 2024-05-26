@@ -93,6 +93,19 @@ class MinimalService(Node):
         #self.recalculate_path()
         
     def update_map(self, lista_sensores,posx,posy,orientation):
+        for i in range(0,len(lista_sensores),2):
+            lx = lista_sensores[i] + posx
+            ly = lista_sensores[i+1] + posy
+            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+            self.addPointGlobal(xt,xy,posx,posy,orientation)
+
+    
+    def addPointGlobal(self, x, y, posx, posy, orientation):
+        rotation_matrix = np.array([[math.cos(orientation), -math.sin(orientation)], [math.sin(orientation), math.cos(orientation)]])
+        translation_vector = np.array([posx, posy])
+        global_coordinates = np.dot(rotation_matrix, np.array([x, y])) + translation_vector
+        self.map[(int(global_coordinates[0]//self.grid_size), int(global_coordinates[1]//self.grid_size))] = 1
+    
         if posx and posy and orientation:
             for i in range(0,len(lista_sensores),2):
                 lx = lista_sensores[i] + posx
