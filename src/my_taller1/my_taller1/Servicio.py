@@ -70,10 +70,12 @@ class MinimalService(Node):
         
     
     def orientation_callback(self, msg):
+        self.get_logger().info("orientation callback")
         self.theta = msg.data + math.pi
     
     
     def pos_callback(self, msg):
+        self.get_logger().info("position callback")
         self.posx = msg.linear.x
         self.posy = msg.linear.y
         
