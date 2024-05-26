@@ -75,18 +75,18 @@ class MinimalService(Node):
         
     
     def orientation_callback(self, msg):
-        self.get_logger().info("orientation callback")
+        #self.get_logger().info("orientation callback")
         self.theta = msg.data + math.pi
     
     
     def pos_callback(self, msg):
-        self.get_logger().info("position callback")
+        #self.get_logger().info("position callback")
         self.posx = msg.linear.x
         self.posy = msg.linear.y
         
     
     def laser_callback(self, msg):
-        self.get_logger().info("Laser data callback invoqued")
+        #self.get_logger().info("Laser data callback invoqued")
         self.laser_data_list = list(msg.data)
         #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
         self.update_map()
@@ -215,10 +215,10 @@ class MinimalService(Node):
         
         
         while(self.ratio_separation() > 0.5):
-            self.get_logger().info("while loop in service callback")
+            #self.get_logger().info("while loop in service callback")
             
-            #self.recalculate_path()
-            #print(self.current_path)
+            self.recalculate_path()
+            print(self.current_path, math.degrees(self.theta)%360)
             
             v,w=0.0,0.0 
             msg = Twist()
