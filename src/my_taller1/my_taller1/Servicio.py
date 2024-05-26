@@ -253,7 +253,7 @@ def displayThread(Node):
 
         matrix = 255*np.ones((300,300), dtype = np.uint8)
         if Node.posx and Node.posy:
-            matrix[int(Node.posx//Node.grid_size)+200][int(Node.posy//Node.grid_size)+200] = 128
+            matrix[int(Node.posx//Node.grid_size)+200][int(Node.posy//Node.grid_size)+200] = 1
         for pos in list(Node.map):
             matrix[pos[0]+200][pos[1]+200] = Node.map[pos]
         displayMapRealtime(matrix, Node)
