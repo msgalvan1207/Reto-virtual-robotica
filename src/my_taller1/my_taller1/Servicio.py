@@ -167,7 +167,7 @@ class MinimalService(Node):
         try:
             start = (int(self.posx//self.grid_size),int(self.posy//self.grid_size))
             goal = (int(self.posx_deseado//self.grid_size),int(self.posy_deseado//self.grid_size))
-            print(start, goal, (self.posx, self.posy), (self.posx_deseado, self.posy_deseado))
+            #print(start, goal, (self.posx, self.posy), (self.posx_deseado, self.posy_deseado))
             self.current_path = self.a_star(start,goal)
             #print(self.current_path)
             #print('try function')
