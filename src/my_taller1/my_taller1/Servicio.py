@@ -210,8 +210,8 @@ class MinimalService(Node):
         while(self.ratio_separation() > 0.5):
             self.get_logger().info("while loop in service callback")
             
-            self.recalculate_path()
-            print(self.current_path)
+            #self.recalculate_path()
+            #print(self.current_path)
             
             v,w=0.0,0.0 
             msg = Twist()
