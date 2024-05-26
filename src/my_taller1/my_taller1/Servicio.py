@@ -262,9 +262,9 @@ def main(args=None):
     executor = MultiThreadedExecutor()
     executor.add_node(minimal_service_node)
     
-    displayThread = threading.Thread(target=displayThread, args=(minimal_service_node,), daemon=True)
+    thread = threading.Thread(target=displayThread, args=(minimal_service_node,), daemon=True)
     
-    displayThread.start()
+    thread.start()
 
     try:
         executor.spin()
