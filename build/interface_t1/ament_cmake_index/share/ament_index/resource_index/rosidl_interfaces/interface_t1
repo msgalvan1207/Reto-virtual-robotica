@@ -1,4 +1,0 @@
-srv/MiServicio.idl
-srv/MiServicio.srv
-srv/MiServicio_Request.msg
-srv/MiServicio_Response.msg
