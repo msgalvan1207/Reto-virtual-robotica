@@ -1,4 +1,4 @@
 #Ignore build directories
 build/
 install/
-log
+log/
