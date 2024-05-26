@@ -211,7 +211,7 @@ class MinimalService(Node):
         self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
         
         #Subscriptor del servicio
-        self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
+        #self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
         
         
         while (self.ratio_separation() > 0.5):
