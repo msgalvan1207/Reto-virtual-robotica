@@ -4,6 +4,7 @@ import rclpy
 import math
 import heapq
 from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
 from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Float32, Float32MultiArray
 from abc import ABC, abstractmethod
@@ -49,13 +50,13 @@ class MinimalService(Node):
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
         #Subscriptor de posición del robot
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback)
+        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10)
         
         #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback)
+        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10)
         
         #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback)
+        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10)
         
         #Subscriptor del servicio
         self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback) 
@@ -154,13 +155,18 @@ class MinimalService(Node):
         return neighbors
     
     def recalculate_path(self):
+        print('invoqued recalculate_path')
         try:
             start = (int(self.posx//self.grid_size),int(self.posy//self.grid_size))
             goal = (int(self.posx_deseado//self.grid_size),int(self.posy_deseado//self.grid_size))
+            print(start, goal, (self.posx, self.posy), (self.posx_deseado, self.posy_deseado))
             self.current_path = self.a_star(start,goal)
             print(self.current_path)
+            print('try function')
         except:
             self.current_path = []
+            print('catch except')
+            
 
 
     def MiServicio_callback(self, request, response):
@@ -191,12 +197,13 @@ class MinimalService(Node):
         self.posx_deseado=float(self.posx_deseado)
         self.posy_deseado=float(self.posy_deseado)
         timer_period = 0.1  # seconds
-        print("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
+        #print("posx_deseado: %f posy_deseado: %f" % (self.posx_deseado, self.posy_deseado))
         self.publisher_ = self.create_publisher(Twist, '/turtlebot_cmdVel', 1)
         while (self.ratio_separation() > 0.5):
-            print("x_deseado: %f y_deseado: %f x_actual: %f y_actual: %f" % (self.posx_deseado,self.posy_deseado,self.posx,self.posy))
+            #print("x_deseado: %f y_deseado: %f x_actual: %f y_actual: %f" % (self.posx_deseado,self.posy_deseado,self.posx,self.posy))
             #Hacer codigo de moviemiento de roboot , recordar suscribirse a los topicos de '/turtlebot_position', /turtlebot_orientation' y '/hokuyo_laser_data''
-            
+            #print('stuck in this loop')
+
             v,w=0.0,0.0 
             msg = Twist()
             msg.linear.x = v
@@ -215,11 +222,17 @@ class MinimalService(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_service = MinimalService()
+    minimal_service_node = MinimalService()
 
-    rclpy.spin(minimal_service)
+    executor = MultiThreadedExecutor()
+    executor.add_node(minimal_service_node)
 
-    rclpy.shutdown()
+    try:
+        executor.spin()
+    finally:
+        executor.shutdown()
+        minimal_service_node.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
