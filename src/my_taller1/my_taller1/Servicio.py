@@ -80,7 +80,8 @@ class MinimalService(Node):
     
     def laser_callback(self, msg):
         self.laser_data_list = list(msg.data)
-        if self.posx and self.posy:
+        print(self.posx,self.posy,self.orientation)
+        if self.posx and self.posy and self.orientation:
             self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.orientation)
     
     
