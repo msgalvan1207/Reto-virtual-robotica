@@ -78,7 +78,7 @@ class MinimalService(Node):
     
     def orientation_callback(self, msg):
         #self.get_logger().info("orientation callback")
-        self.theta = msg.data - math.pi
+        self.theta = msg.data + math.pi
     
     
     def pos_callback(self, msg):
@@ -105,7 +105,8 @@ class MinimalService(Node):
             self.addPointGlobal(lx,ly,posx,posy,orientation)
 
     
-    def addPointGlobal(self, x, y, posx, posy, orientation):
+    def addPointGlobal(self, x, y, posx, posy, theta):
+        orientation = theta - math.pi
         rotation_matrix = np.array([[math.cos(orientation), -math.sin(orientation)], [math.sin(orientation), math.cos(orientation)]])
         translation_vector = np.array([posx, posy])
         global_coordinates = np.dot(rotation_matrix, np.array([x, y])) + translation_vector
