@@ -100,9 +100,9 @@ class MinimalService(Node):
             ly = lista_sensores[i+1]
             #self.map[(int(lx//self.grid_size), int(ly//self.grid_size))] = 1
 
-            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
-            self.map[int(xt//self.grid_size),int(xy//self.grid_size)] = 1
-            #self.addPointGlobal(xt,xy,posx,posy,orientation)
+            #xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+            #self.map[int(xt//self.grid_size),int(xy//self.grid_size)] = 1
+            self.addPointGlobal(xt,xy,posx,posy,orientation)
 
     
     def addPointGlobal(self, x, y, posx, posy, orientation):
