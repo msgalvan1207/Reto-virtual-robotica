@@ -144,12 +144,13 @@ class MinimalService(Node):
     def calcular_comandos(self):
         error_x = self.posx_deseado - self.posx
         erryr_y = self.posy_deseado - self.posy
-        error_theta = math.atan2(erryr_y,error_x) - self.orientation
+        error_angular = math.atan2(erryr_y,error_x) - self.orientation
+        error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
 
         if self.obstaculo_adelante():
             return 0.0, 0.5
         else:
-            return 0.2, 0.5 * error_theta
+            return 0.2, 0.5 * error_angular
         
     
     def obstaculo_adelante(self):
