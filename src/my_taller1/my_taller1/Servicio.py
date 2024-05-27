@@ -34,7 +34,9 @@ class MinimalService(Node):
         #Variables de callback Groups (1 por callback, se utilizan para que los callbacks no se bloqueen entre si y par que un mismo callback no se ejecute al mismo tiempo que si mismo)
         
         
-        self.simulation_callback_group = MutuallyExclusiveCallbackGroup()
+        self.pos_callback_group = MutuallyExclusiveCallbackGroup()
+        self.orientation_callback_group = MutuallyExclusiveCallbackGroup()
+        self.laser_callback_group = MutuallyExclusiveCallbackGroup()
         self.service_callback_group = MutuallyExclusiveCallbackGroup()
         
         #Iniciar variables con un valor inicial
@@ -62,13 +64,13 @@ class MinimalService(Node):
         
         #Publicadores y subscriptores que se tienen que tener en cuenta:
         #Subscriptor de posición del robot
-        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10, callback_group=self.simulation_callback_group)
+        self.pos_sub = self.create_subscription(Twist, '/turtlebot_position', self.pos_callback,10, callback_group=self.pos_callback_group)
         
         #Subscriptor de orientación del robot
-        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10, callback_group=self.simulation_callback_group)
+        self.orientation_sub = self.create_subscription(Float32, '/turtlebot_orientation', self.orientation_callback,10, callback_group=self.orientation_callback_group)
         
         #Subscriptor de laser
-        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10, callback_group=self.simulation_callback_group)
+        self.laser_sub = self.create_subscription(Float32MultiArray, '/hokuyo_laser_data', self.laser_callback,10, callback_group=self.laser_callback_group)
         
         #Subscriptor del servicio
         self.srv = self.create_service(MiServicio, 'miservicio', self.MiServicio_callback, callback_group=self.service_callback_group) 
