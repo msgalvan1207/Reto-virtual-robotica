@@ -70,7 +70,7 @@ class MinimalService(Node):
         
     
     def orientation_callback(self, msg):
-        self.orientation = msg.data
+        self.orientation = msg.data + math.pi
     
     
     def pos_callback(self, msg):
@@ -134,23 +134,25 @@ class MinimalService(Node):
         self.get_logger().info("Start navigation loop")
 
         while(self.ratio_separation() > 0.5):
-            v,w = self.calcular_comandos()
+            #print(self.posx, self.posy)
+            print(math.degrees(self.orientation))
+            v,w, hold = self.calcular_comandos()
             msg = Twist()
             msg.linear.x = v
             msg.angular.z = w 
             self.publisher_.publish(msg)
-            time.sleep(timer_period)
+            time.sleep(timer_period*hold)
 
     def calcular_comandos(self):
         error_x = self.posx_deseado - self.posx
-        erryr_y = self.posy_deseado - self.posy
-        error_angular = math.atan2(erryr_y,error_x) - self.orientation
+        error_y = self.posy_deseado - self.posy
+        error_angular = math.atan2(-error_y,error_x) - self.orientation
         error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
 
         if self.obstaculo_adelante():
-            return 0.0, 0.5
+            return 0.0, 0.5, 10
         else:
-            return 0.2, 0.5 * error_angular
+            return 0.2, 0.1 * error_angular, 1
         
     
     def obstaculo_adelante(self):
