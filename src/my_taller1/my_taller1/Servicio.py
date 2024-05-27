@@ -91,7 +91,8 @@ class MinimalService(Node):
         #self.get_logger().info("Laser data callback invoqued")
         self.laser_data_list = list(msg.data)
         #self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.theta)
-        self.update_map(self.laser_data_list,self.posx,self.posy,self.theta)
+        if self.posx and self.posy:
+            self.update_map(self.laser_data_list,self.posx,self.posy,self.theta)
         #self.recalculate_path()
         
     def update_map(self, lista_sensores,posx,posy,orientation):
@@ -259,9 +260,9 @@ def displayThread(Node):
 
         matrix = 255*np.ones((300,300), dtype = np.uint8)
         if Node.posx and Node.posy:
-            matrix[int(Node.posx//Node.grid_size)+100][int(Node.posy//Node.grid_size)+100] = 1
+            matrix[int(Node.posy//Node.grid_size)+100][int(Node.posx//Node.grid_size)+100] = 1
         for pos in list(Node.map):
-            matrix[pos[0]+100][pos[1]+100] = Node.map[pos]
+            matrix[pos[1]+100][pos[0]+100] = Node.map[pos]
         displayMapRealtime(matrix, Node)
         time.sleep(1 /30.0)
 
