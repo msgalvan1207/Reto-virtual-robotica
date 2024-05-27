@@ -97,8 +97,8 @@ class MinimalService(Node):
         
     def update_map(self, lista_sensores,posx,posy,orientation):
         for i in range(0,len(lista_sensores),2):
-            lx = -lista_sensores[i]
-            ly = lista_sensores[i+1]
+            lx = -lista_sensores[i] #Si no esta este menos. El mapeo en giro no funciona correctamente
+            ly = -lista_sensores[i+1]
             #self.map[(int(lx//self.grid_size), int(ly//self.grid_size))] = 1
 
             #xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
@@ -107,7 +107,7 @@ class MinimalService(Node):
 
     
     def addPointGlobal(self, x, y, posx, posy, theta):
-        orientation = theta - math.pi
+        orientation = theta + math.pi
         rotation_matrix = np.array([[math.cos(orientation), -math.sin(orientation)], [math.sin(orientation), math.cos(orientation)]])
         translation_vector = np.array([posx, posy])
         global_coordinates = np.dot(rotation_matrix, np.array([x, y])) + translation_vector
