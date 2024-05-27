@@ -96,8 +96,8 @@ class MinimalService(Node):
         
     def update_map(self, lista_sensores,posx,posy,orientation):
         for i in range(0,len(lista_sensores),2):
-            lx = lista_sensores[i] + posx
-            ly = lista_sensores[i+1] + posy
+            lx = lista_sensores[i]
+            ly = lista_sensores[i+1]
             #self.map[(int(lx//self.grid_size), int(ly//self.grid_size))] = 1
 
             xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
