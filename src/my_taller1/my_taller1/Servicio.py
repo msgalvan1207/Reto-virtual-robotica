@@ -80,7 +80,6 @@ class MinimalService(Node):
     
     def laser_callback(self, msg):
         self.laser_data_list = list(msg.data)
-        print(self.posx,self.posy,self.orientation)
         if self.posx and self.posy and self.orientation:
             self.position_laser,self.x_laser_transform,self.y_laser_transform=self.descompress_data(self.laser_data_list,self.posx,self.posy,self.orientation)
     
@@ -131,7 +130,9 @@ class MinimalService(Node):
         timer_period = 0.1  # seconds
         
         self.publisher_ = self.create_publisher(Twist, '/turtlebot_cmdVel', 1)
-        
+
+        self.get_logger().info("Start navigation loop")
+
         while(self.ratio_separation() > 0.5):
             v,w = self.calcular_comandos()
             msg = Twist()
