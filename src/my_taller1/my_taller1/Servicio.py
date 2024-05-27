@@ -96,8 +96,10 @@ class MinimalService(Node):
         for i in range(0,len(lista_sensores),2):
             lx = lista_sensores[i] + posx
             ly = lista_sensores[i+1] + posy
-            self.map[(int(lx//self.grid_size), int(ly//self.grid_size))] = 1
-            #xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+            #self.map[(int(lx//self.grid_size), int(ly//self.grid_size))] = 1
+
+            xt,xy = self.transform_coordinates(lx,ly,orientation,posx,posy)
+            self.map[int(xt//self.grid_size),int(xy//self.grid_size)] = 1
             #self.addPointGlobal(xt,xy,posx,posy,orientation)
 
     
@@ -254,9 +256,9 @@ def displayThread(Node):
 
         matrix = 255*np.ones((300,300), dtype = np.uint8)
         if Node.posx and Node.posy:
-            matrix[int(Node.posx//Node.grid_size)+200][int(Node.posy//Node.grid_size)+200] = 1
+            matrix[int(Node.posx//Node.grid_size)+100][int(Node.posy//Node.grid_size)+100] = 1
         for pos in list(Node.map):
-            matrix[pos[0]+200][pos[1]+200] = Node.map[pos]
+            matrix[pos[0]+100][pos[1]+100] = Node.map[pos]
         displayMapRealtime(matrix, Node)
         time.sleep(1 /30.0)
 
