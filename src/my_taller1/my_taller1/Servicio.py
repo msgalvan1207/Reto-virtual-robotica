@@ -109,7 +109,7 @@ class MinimalService(Node):
         orientation = theta - math.pi
         rotation_matrix = np.array([[math.cos(orientation), -math.sin(orientation)], [math.sin(orientation), math.cos(orientation)]])
         translation_vector = np.array([posx, posy])
-        global_coordinates = np.dot(rotation_matrix, np.array([x, y])) - translation_vector
+        global_coordinates = np.dot(rotation_matrix, np.array([x, y])) + translation_vector
         self.map[(int(global_coordinates[0]//self.grid_size), int(global_coordinates[1]//self.grid_size))] = 1
     
     
