@@ -142,6 +142,10 @@ class MinimalService(Node):
             msg.angular.z = w 
             self.publisher_.publish(msg)
             time.sleep(timer_period*hold)
+        
+        msg.linear.x = 0.0
+        msg.angular.z = 0.0
+        self.publisher_.publish(msg)
 
     def calcular_comandos(self):
         error_x = self.posx_deseado - self.posx
