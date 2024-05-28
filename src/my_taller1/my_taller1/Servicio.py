@@ -133,6 +133,14 @@ class MinimalService(Node):
 
         self.get_logger().info("Start navigation loop")
 
+        while(self.apuntar_primero()):
+            v,w, hold = self.calcular_comandos()
+            msg = Twist()
+            msg.linear.x = 0.0
+            msg.angular.z = w 
+            self.publisher_.publish(msg)
+            time.sleep(timer_period*hold)
+
         while(self.ratio_separation() > 0.5):
             print(self.posx, self.posy)
             #print(math.degrees(self.orientation))
