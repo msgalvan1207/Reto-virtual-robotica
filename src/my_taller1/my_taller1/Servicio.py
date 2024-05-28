@@ -134,6 +134,7 @@ class MinimalService(Node):
         self.get_logger().info("Start navigation loop")
 
         while(self.apuntar_primero()):
+            print("apuntando")
             v,w, hold = self.calcular_comandos()
             msg = Twist()
             msg.linear.x = 0.0
@@ -162,7 +163,7 @@ class MinimalService(Node):
         error_angular = math.atan2(-error_y,error_x) - self.orientation
         error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
         print(abs(error_angular))
-        if abs(error_angular) > 1:
+        if abs(error_angular) > math.radians(30):
             return True
         else:
             return False
