@@ -154,13 +154,13 @@ class MinimalService(Node):
         error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
 
         if self.obstaculo_adelante():
-            return 0.0, 0.5, 10
+            return 0.0, 0.5, 20
         else:
             return 0.2, 0.1 * error_angular, 1
         
     
     def obstaculo_adelante(self):
-        umbral_dist_frontal = 1.0
+        umbral_dist_frontal = 0.5
         for lx, ly in self.position_laser:
             distancia_obstaculo = math.sqrt(lx**2 + ly**2)
             angulo_obstaculo = math.atan2(ly,lx)
