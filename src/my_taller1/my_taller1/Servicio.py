@@ -161,7 +161,7 @@ class MinimalService(Node):
         error_y = self.posy_deseado - self.posy
         error_angular = math.atan2(-error_y,error_x) - self.orientation
         error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
-        if abs(error_angular) > 0.1:
+        if abs(error_angular) > 0.5:
             return True
         else:
             return False
