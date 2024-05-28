@@ -133,14 +133,14 @@ class MinimalService(Node):
 
         self.get_logger().info("Start navigation loop")
 
-        while(self.apuntar_primero()):
-            print("apuntando")
-            v,w, hold = self.calcular_comandos()
-            msg = Twist()
-            msg.linear.x = 0.0
-            msg.angular.z = w * 1.5
-            self.publisher_.publish(msg)
-            time.sleep(timer_period*hold)
+        #while(self.apuntar_primero()):
+            #print("apuntando")
+            #v,w, hold = self.calcular_comandos()
+            #msg = Twist()
+            #msg.linear.x = 0.0
+            #msg.angular.z = w * 1.5
+            #self.publisher_.publish(msg)
+            #time.sleep(timer_period*hold)
 
         while(self.ratio_separation() > 0.5):
             print(self.posx, self.posy)
@@ -177,7 +177,7 @@ class MinimalService(Node):
         if self.obstaculo_adelante():
             return 0.0, 0.5, 15
         else:
-            return 0.2, 0.1 * error_angular, 1
+            return 0.2, 0.5 * error_angular, 1
         
     
     def obstaculo_adelante(self):
