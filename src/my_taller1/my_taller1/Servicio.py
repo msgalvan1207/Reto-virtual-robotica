@@ -138,7 +138,7 @@ class MinimalService(Node):
             v,w, hold = self.calcular_comandos()
             msg = Twist()
             msg.linear.x = 0.0
-            msg.angular.z = w 
+            msg.angular.z = w * 1.5
             self.publisher_.publish(msg)
             time.sleep(timer_period*hold)
 
