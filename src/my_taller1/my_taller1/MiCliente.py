@@ -6,11 +6,24 @@ from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
 import random
+
+import serial
+
+
 class my_cliente(Node):
 
     def __init__(self):
         super().__init__('my_taller2_node')
 
+        try:
+            self.serialPort = "/dev/ttyACM0"
+            self.get_logger().info('Intentando abrir puerto serial en: %s' % self.serialPort)
+            self.serialCon = serial.Serial(self.serialPort, 9600, timeout=1)
+            self.get_logger().info('Puerto serial abierto en: %s' % self.serialPort.name)
+        except Exception as e:
+            self.get_logger().info('Error al abrir puerto serial: %r' % e)
+            self.serialPort = None
+            self.serialCon = None
 
         self.cliente = self.create_client(MiServicio, 'miservicio')
 
@@ -59,7 +72,11 @@ def main(args=None):
                     'Service call failed %r' % (e,))
             else:
                 print("BAZINGA")
-                print(node.req.ruta, response.confirmacion)  # CHANGE
+                print(node.req.ruta, response.confirmacion)
+                if node.serialCon and node.serialPort:
+                    node.serialCon.write("run".encode("utf-8"))
+                    node.get_logger().info('Enviando ruta al robot: %s' % node.req.ruta)
+                    node.get_logger().info('Respuesta del robot: %s' % response.confirmacion)
             break
 
             
