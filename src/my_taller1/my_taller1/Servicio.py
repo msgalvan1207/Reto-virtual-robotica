@@ -191,7 +191,7 @@ class MinimalService(Node):
     
 
     def angulo_delante(self, angulo):
-        return -math.pi/6 < angulo < math.pi/6
+        return -math.pi/3 < angulo < math.pi/3
 
     def ratio_separation(self):
         r=((self.posx-self.posx_deseado)**2+(self.posy-self.posy_deseado)**2)**(0.5)
