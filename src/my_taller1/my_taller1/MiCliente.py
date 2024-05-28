@@ -58,7 +58,7 @@ def main(args=None):
                 node.get_logger().info(
                     'Service call failed %r' % (e,))
             else:
-                                           # CHANGE
+                print("BAZINGA")
                 print(node.req.ruta, response.confirmacion)  # CHANGE
             break
 
