@@ -138,7 +138,7 @@ class MinimalService(Node):
             v,w, hold = self.calcular_comandos()
             msg = Twist()
             msg.linear.x = 0.0
-            msg.angular.z = w * 1.5
+            msg.angular.z = w
             self.publisher_.publish(msg)
             time.sleep(timer_period*hold)
 
@@ -162,7 +162,7 @@ class MinimalService(Node):
         error_y = self.posy_deseado - self.posy
         error_angular = math.atan2(-error_y,error_x) - self.orientation
         error_angular = math.atan2(math.sin(error_angular), math.cos(error_angular))
-        print(math.degrees(error_angular), 90)
+        print(abs(math.degrees(error_angular))-90, 90)
         if abs(error_angular) > math.radians(90):
             return True
         else:
