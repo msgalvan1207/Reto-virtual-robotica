@@ -19,7 +19,7 @@ class my_cliente(Node):
             self.serialPort = "/dev/ttyACM0"
             self.get_logger().info('Intentando abrir puerto serial en: %s' % self.serialPort)
             self.serialCon = serial.Serial(self.serialPort, 9600, timeout=1)
-            self.get_logger().info('Puerto serial abierto en: %s' % self.serialPort.name)
+            #self.get_logger().info('Puerto serial abierto en: %s' % self.serialPort.name)
         except Exception as e:
             self.get_logger().info('Error al abrir puerto serial: %r' % e)
             self.serialPort = None
